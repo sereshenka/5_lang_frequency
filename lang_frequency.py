@@ -1,6 +1,5 @@
 import os
 import sys
-import collections
 import re
 
 
@@ -11,20 +10,23 @@ def load_data(filepath):
         return None
     return open(filepath,'r')
 
-def get_most_frequent_words(text):
+def language():
     print('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход')
     a=int(input())
     if a == 2 or a == 1 or a == 0:
         if a == 2:
             p = re.compile("([а-яА-Я-']+)")
+            return (p)
         if a == 1:
             p = re.compile("([a-zA-Z-']+)")
+            return (p)
         if a == 0:
             sys.exit()
     else:
         print('Вы непраивльно ввели цифру,перезапустите программу')
         sys.exit()
-    i=0
+
+def get_most_frequent_words(text,p):
     res = p.findall(text)
     isword = {}
     for key in res:
@@ -34,6 +36,10 @@ def get_most_frequent_words(text):
             isword[key] = value + 1
         else:
             isword[key] = 1
+    return (isword)
+
+def sorting(isword):
+    i=0
     sorted_keys = sorted (isword,key = lambda x: int(isword[x]), reverse = True)
     for key in sorted_keys :
         if i <= 9:
@@ -43,13 +49,15 @@ def get_most_frequent_words(text):
 
 
 if __name__ == '__main__':
-    pass
+    direkt = input('Укажите пусть до фаила:')
+    file = load_data(direkt)
+    p = language()
+    dictionary = get_most_frequent_words(file.read(),p)
+    file.close
+    sorting(dictionary)
 
-direkt = input('Укажите пусть до фаила:')
-file = load_data(direkt)
-get_most_frequent_words(file.read())
 
 
-file.close
+
 
 
