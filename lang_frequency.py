@@ -6,25 +6,22 @@ import re
 def load_data(filepath):
     if not os.path.exists(filepath):
         print('Путь до файла указан не верно\не существует такого файла. Перезапустите,пожалуйста, программу')
-        sys.exit()
         return None
-    return open(filepath,'r')
+    return(open(filepath,'r'))
 
-def language():
-    print('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход')
-    a=int(input())
-    if a == 2 or a == 1 or a == 0:
-        if a == 2:
+def language(n):
+    if n == 2 or n == 1 or n == 0:
+        if n == 2:
             p = re.compile("([а-яА-Я-']+)")
             return (p)
-        if a == 1:
+        if n == 1:
             p = re.compile("([a-zA-Z-']+)")
             return (p)
-        if a == 0:
+        if n == 0:
             sys.exit()
     else:
         print('Вы непраивльно ввели цифру,перезапустите программу')
-        sys.exit()
+        return None
 
 def get_most_frequent_words(text,p):
     res = p.findall(text)
@@ -51,7 +48,8 @@ def sorting(isword):
 if __name__ == '__main__':
     direkt = input('Укажите пусть до фаила:')
     file = load_data(direkt)
-    p = language()
+    n = int(input('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход\n'))
+    p = language(n)
     dictionary = get_most_frequent_words(file.read(),p)
     file.close
     sorting(dictionary)
