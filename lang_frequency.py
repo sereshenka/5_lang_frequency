@@ -2,12 +2,23 @@ import os
 import sys
 import re
 
+def input1():
+    try:
+        n = int(input('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход\n'))
+        return (n)
+    except ValueError:
+        n = None
+    if n is None:
+        print('Неверный формат ввода')
 
 def load_data(filepath):
     if not os.path.exists(filepath):
         print('Путь до файла указан не верно\не существует такого файла. Перезапустите,пожалуйста, программу')
         return None
-    return(open(filepath,'r'))
+    else:
+        return(open(filepath,'r'))
+        
+        
 
 def language(n):
     if n == 2 or n == 1 or n == 0:
@@ -21,6 +32,14 @@ def language(n):
             sys.exit()
     else:
         print('Вы непраивльно ввели цифру,перезапустите программу')
+        return None
+
+
+def open_txt(file):
+    try:
+        return(file.read())
+    except (IOError,ValueError):
+        print ('Неправильный формат файла')
         return None
 
 def get_most_frequent_words(text,p):
@@ -48,14 +67,13 @@ def sorting(isword):
 if __name__ == '__main__':
     direkt = input('Укажите пусть до фаила:')
     file = load_data(direkt)
-    n = int(input('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход\n'))
-    p = language(n)
-    dictionary = get_most_frequent_words(file.read(),p)
-    file.close
-    sorting(dictionary)
-
-
-
-
-
-
+    if file is not None:
+        n = input1()
+        if n is not None:        
+            p = language(n)
+            if p is not None:
+                text = open_txt(file)
+                if text is not None:
+                    dictionary = get_most_frequent_words(text,p)
+                    file.close
+                    sorting(dictionary)
