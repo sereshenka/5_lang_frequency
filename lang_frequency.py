@@ -1,79 +1,73 @@
 import os
-import sys
 import re
+import argparse
+from collections import Counter
 
-def input1():
-    try:
-        n = int(input('Укажите,пожалуйста, язык текста\n2-Русский\n1-Английский\n0-Выход\n'))
-        return (n)
-    except ValueError:
-        n = None
-    if n is None:
-        print('Неверный формат ввода')
+def read_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', help='Укажите путь к файлу ', nargs = '?')
+    file_path = parser.parse_args().file
+    return (existence_of_arguments(file_path, parser))
 
-def load_data(filepath):
-    if not os.path.exists(filepath):
-        print('Путь до файла указан не верно\не существует такого файла. Перезапустите,пожалуйста, программу')
+def existence_of_arguments(file_path, parser):
+    if not file_path:
+        parser.print_help()
         return None
     else:
-        return(open(filepath,'r'))
-        
-        
+        return (file_path)
 
-def language(n):
-    if n == 2 or n == 1 or n == 0:
-        if n == 2:
-            p = re.compile("([а-яА-Я-']+)")
-            return (p)
-        if n == 1:
-            p = re.compile("([a-zA-Z-']+)")
-            return (p)
-        if n == 0:
-            sys.exit()
-    else:
-        print('Вы непраивльно ввели цифру,перезапустите программу')
+        
+def load_data(file):
+    if not os.path.exists(file):
+        print ('Неверный путь до файла\файла не существует,перезапустите программу и введите правильные данные')
         return None
-
-
+    else:
+        return (open_txt(file))
+    
+        
 def open_txt(file):
     try:
-        return(file.read())
-    except (IOError,ValueError):
-        print ('Неправильный формат файла')
+        with open(file, 'r', encoding = 'utf-8') as file_handler:
+            return (file_handler.read())
+    except ValueError :
+        print('Фаил нельзя прочитать')
         return None
 
-def get_most_frequent_words(text,p):
-    res = p.findall(text)
-    isword = {}
-    for key in res:
-        key = key.lower()
-        if key in isword:
-            value = isword[key]
-            isword[key] = value + 1
-        else:
-            isword[key] = 1
-    return (isword)
 
-def sorting(isword):
-    i=0
-    sorted_keys = sorted (isword,key = lambda x: int(isword[x]), reverse = True)
-    for key in sorted_keys :
+def get_most_frequent_words(text):
+    p = re.compile("([a-zA-Zа-яА-Я-']+)")
+    all_words = p.findall(text)
+    return (frequent_dictionary(all_words))
+
+def frequent_dictionary(all_words):
+    dictionary = Counter()
+    for key in all_words:
+        key = key.lower()
+        dictionary[key] += 1
+    return (dictionary)
+        
+        
+
+def sort(dictionary):
+    sorted_keys = sorted(dictionary,key = lambda x: int(dictionary[x]), reverse = True)
+    return (sorted_keys)
+
+def print_most_10_words(sorted_dictionary):
+    i = 0
+    print('Десять саммых популярных слов:')
+    for key in sorted_dictionary:
         if i <= 9:
-            s = str("{0}-{1}раз").format(key,isword[key])
-            i+=1
+            s = str("{0}-{1}раз").format(key, dictionary[key])
+            i += 1
             print (s)
 
 
 if __name__ == '__main__':
-    direkt = input('Укажите пусть до фаила:')
-    file = load_data(direkt)
-    if file is not None:
-        n = input1()
-        if n is not None:        
-            p = language(n)
-            if p is not None:
-                text = open_txt(file)
-                if text is not None:
-                    dictionary = get_most_frequent_words(text,p)
-                    file.close
-                    sorting(dictionary)
+    file_path = read_arguments()
+    if file_path is not None:
+        file = load_data(file_path)
+        if file is not None:        
+            dictionary = get_most_frequent_words(file)
+            sorted_dictionary = sort(dictionary)
+            print_most_10_words(sorted_dictionary)
+            
