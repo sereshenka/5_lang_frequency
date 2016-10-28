@@ -3,11 +3,13 @@ import re
 import argparse
 from collections import Counter
 
+
 def read_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', help='Укажите путь к файлу ', nargs = '?')
     file_path = parser.parse_args().file
     return (existence_of_arguments(file_path, parser))
+
 
 def existence_of_arguments(file_path, parser):
     if not file_path:
@@ -39,18 +41,19 @@ def get_most_frequent_words(text):
     all_words = p.findall(text)
     return (frequent_dictionary(all_words))
 
+
 def frequent_dictionary(all_words):
     dictionary = Counter()
     for key in all_words:
         key = key.lower()
         dictionary[key] += 1
     return (dictionary)
-        
-        
+         
 
 def sort(dictionary):
     sorted_keys = sorted(dictionary,key = lambda x: int(dictionary[x]), reverse = True)
     return (sorted_keys)
+
 
 def print_most_10_words(sorted_dictionary):
     i = 0
