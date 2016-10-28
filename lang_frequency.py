@@ -1,8 +1,15 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+
 import os
 import re
 import argparse
 from collections import Counter
 
+def load_win_unicode_console():
+    if sys.platform == 'win32':
+        import win_unicode_console
+        win_unicode_console.enable()
 
 def read_arguments():
     parser = argparse.ArgumentParser()
@@ -48,7 +55,7 @@ def frequent_dictionary(all_words):
         key = key.lower()
         dictionary[key] += 1
     return (dictionary)
-         
+               
 
 def sort(dictionary):
     sorted_keys = sorted(dictionary,key = lambda x: int(dictionary[x]), reverse = True)
@@ -66,6 +73,7 @@ def print_most_10_words(sorted_dictionary):
 
 
 if __name__ == '__main__':
+    load_win_unicode_console()
     file_path = read_arguments()
     if file_path is not None:
         file = load_data(file_path)
