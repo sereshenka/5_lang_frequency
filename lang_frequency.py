@@ -7,11 +7,13 @@ import sys
 import argparse
 from collections import Counter
 
+
 def load_win_unicode_console():
     if sys.platform == 'win32':
         import win_unicode_console
         win_unicode_console.enable()
 
+        
 def read_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', help='Укажите путь к файлу ', nargs = '?')
@@ -51,12 +53,10 @@ def get_most_frequent_words(text):
 
 
 def frequent_dictionary(all_words):
-    dictionary = Counter()
-    for key in all_words:
-        key = key.lower()
-        dictionary[key] += 1
+    all_lower_words = [key.lower() for key in all_words]
+    dictionary = Counter(all_lower_words)
     return (dictionary)
-               
+
 
 def sort(dictionary):
     sorted_keys = sorted(dictionary,key = lambda x: int(dictionary[x]), reverse = True)
@@ -82,4 +82,3 @@ if __name__ == '__main__':
             dictionary = get_most_frequent_words(file)
             sorted_dictionary = sort(dictionary)
             print_most_10_words(sorted_dictionary)
-            
