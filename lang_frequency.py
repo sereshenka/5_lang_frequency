@@ -16,6 +16,10 @@ def load_win_unicode_console():
 
 
 def read_arguments():
+    """
+    использую с join,чтобы программа работала при указании пути,в котором папка
+    может содержать в названии пробел.(C:\\Users\\New User\\file.format)
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', help='Укажите путь к файлу ', nargs = '+')
     arguments = parser.parse_args().file
@@ -38,6 +42,12 @@ def get_most_frequent_words(text):
     p = re.compile("([a-zA-Zа-яА-Я-']+)")
     all_words = p.findall(text)
     return Counter(all_words)
+    """
+    можно было сразу найти 10 самых популярных слов:
+    return Counter(all_words).most_common(10)
+    но это будет не рационально,тк в других проектах,
+    легче будет использовать эту функию и сделать выборку,если нужна
+    """
 
 
 def print_most_10_words(top10_of_dictionary):
