@@ -21,8 +21,8 @@ def read_arguments():
     может содержать в названии пробел.(C:\\Users\\New User\\file.format)
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file', help='Укажите путь к файлу ', nargs = '+')
-    arguments = parser.parse_args().file
+    parser.add_argument('--direction', help='Укажите путь к файлу ', nargs = '+')
+    arguments = parser.parse_args().direction
     try :
         file_path = ' '.join(arguments)
     except TypeError:
