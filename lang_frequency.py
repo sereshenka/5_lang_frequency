@@ -26,12 +26,12 @@ def input_path():
         
 def load_data(file):
     with open(file, 'r', encoding = 'utf-8') as file_handler:
-        return file_handler.read().lower()
+        return file_handler.read()
     
         
 def get_all_words_in_text(text):
-    p = re.compile("([a-zA-Zа-яА-Я-']+)")
-    all_words = p.findall(text)
+    letters = re.compile("([a-zA-Zа-яА-Я-']+)")
+    all_words = letters.findall(text)
     return all_words
 
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
             print('Фаил нельзя прочитать(неподдерживаемый формат фаила)')
             break
         
-        all_words = get_all_words_in_text(text)
+        all_words = get_all_words_in_text(text.lower())
         top10_words = get_top10_words(all_words)
         print_result(top10_words)
         break
